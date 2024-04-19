@@ -1,0 +1,43 @@
+#profile  produce  develop
+spring:
+  profiles:
+    active: dev
+#logback
+logging:
+  config: classpath:logback-spring-${spring.profiles.active}.xml
+
+cool:
+  gateway:
+    port: 9000
+    routes:
+      - id: user
+        instanceName: userService-sample
+        loadType: round
+        predicates:
+          - /user/**
+      - id: serviceA
+        instanceName: AService-sample
+        loadType: round
+        predicates:
+          - /serviceA/**
+      - id: serviceB
+        instanceName: BService-sample
+        loadType: round
+        predicates:
+          - /serviceB/**
+    whites:
+      - /user/**
+      - /serviceB/**
+    limit:
+      open: false
+      limitType: slide
+      qps: 5
+      timeWindow: 5000
+    authority:
+      accessKey: coolGateway
+  registerCenter:
+    adders: 127.0.0.1:8848
+    group: DEFAULT_GROUP
+  server:
+    coreThreadNumber: 10
+    maxThreadNumber: 10
