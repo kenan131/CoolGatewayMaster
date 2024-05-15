@@ -19,7 +19,6 @@ public class AutoConfiguration {
 
     @Bean
     @ConditionalOnClass(BeanScannerFactory.class)
-    @EventListener
     public BeanScannerFactory jwtSignerHolder(){
         return new BeanScannerFactory(gatewayDomain);
     }

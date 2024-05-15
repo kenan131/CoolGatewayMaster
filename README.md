@@ -154,25 +154,17 @@ public interface BService {
 private BService bService;
 ```
 
-- 注意：在上游服务使用请求方式为get的时候，下游服务获取服务的请求参数的变量名应定义为arg0 , arg ,arg(x)。不然获取不到值。
-
-- 原因：在代理类执行invoke方法时，通过method.getParameters();获取不到BService中具体方法的参数名。
-
-相关核心类coolgatewaycore.core.ServiceFactory
-
---------------------------------------------------------------------
-
 **下游服务**接口定义，可以参考sample / BService的写法
 
 ```java
 //get方法获取参数。
 @GetMapping("aaa")
-public UserDto getAAA(@PathParam("arg0") String arg0, @PathParam("arg1")String arg1) 
+public UserDto getAAA(@PathParam("name") String name, @PathParam("age")String age) 
     throws InterruptedException 
 {
     System.out.println("aaa get");
-    System.out.println("请求参数===> name="+arg0 + " age="+arg1);
-    UserDto data = new UserDto( "aaa",18);
+    System.out.println("请求参数===> name="+name + " age="+age);
+    UserDto data = new UserDto( name, age);
     return data;
 }
 ```

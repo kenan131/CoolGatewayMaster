@@ -14,10 +14,10 @@ import javax.websocket.server.PathParam;
 public class ServiceBController {
 
     @GetMapping("aaa")
-    public UserDto getAAA(@PathParam("arg0") String arg0, @PathParam("arg1")String arg1) throws InterruptedException {
-//        System.out.println("aaa get");
-//        System.out.println("请求参数===> name="+arg0 + " age="+arg1);
-        UserDto data = new UserDto( "aaa",18);
+    public UserDto getAAA(@PathParam("name") String name, @PathParam("age")int age) throws InterruptedException {
+        System.out.println("aaa get");
+        System.out.println("请求参数===> name="+name + " age="+age);
+        UserDto data = new UserDto( name, age);
         return data;
     }
 

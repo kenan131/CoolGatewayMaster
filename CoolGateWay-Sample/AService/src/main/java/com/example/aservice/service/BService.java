@@ -1,6 +1,7 @@
 package com.example.aservice.service;
 
 import com.bin.coolgatewaycore.common.CoolMethod;
+import com.bin.coolgatewaycore.common.CoolParam;
 import com.example.aservice.common.UserDto;
 
 /**
@@ -11,9 +12,9 @@ import com.example.aservice.common.UserDto;
 public interface BService {
 
     @CoolMethod(path = "/serviceB/aaa",method = "get")
-    public UserDto getAAA(String name, int age);
+    public UserDto getAAA(@CoolParam(value = "name") String name,@CoolParam(value = "age") int age);
 
     @CoolMethod(path = "/serviceB/bbb",method = "post")
-    public UserDto postBBB(UserDto dto);
+    public UserDto postBBB(@CoolParam(value = "dto")UserDto dto);
 
 }
