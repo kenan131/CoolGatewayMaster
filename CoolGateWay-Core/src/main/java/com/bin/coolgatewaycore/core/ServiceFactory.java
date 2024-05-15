@@ -17,7 +17,6 @@ import java.util.ArrayList;
 @Slf4j
 public class ServiceFactory {
 
-
     static private RequestClient requestClient = new RequestClient();
     
     private String domain;
@@ -42,6 +41,7 @@ public class ServiceFactory {
                 String url = domain + path;
                 Parameter[] parameters = method.getParameters();
                 ArrayList<String> parameterName = new ArrayList<>();
+                //DefaultParameterNameDiscoverer  parameterNameDiscoverer.getParameterNames(method)
                 for(Parameter parameter : parameters){
                     parameterName.add(parameter.getName());
                 }
@@ -66,5 +66,4 @@ public class ServiceFactory {
             }
         });
     }
-
 }

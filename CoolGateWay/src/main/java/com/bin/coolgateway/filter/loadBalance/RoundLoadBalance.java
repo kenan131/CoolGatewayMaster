@@ -2,12 +2,17 @@ package com.bin.coolgateway.filter.loadBalance;
 
 import com.bin.coolgateway.cache.ServerCache;
 import com.bin.coolgateway.common.CoolGateWayException;
+import com.bin.coolgateway.common.GatewayConst;
 import com.bin.coolgateway.common.ResponseCode;
 import com.bin.coolgateway.model.CoolServerInstance;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 /**
  * @author: bin
@@ -26,7 +31,7 @@ public class RoundLoadBalance extends LoadBalance{
     }
 
     @Override
-    CoolServerInstance getServerInstance(String serviceName) {
+    CoolServerInstance getServerInstance(String serviceName,boolean isGray) {
         if(System.currentTimeMillis() > timePoint){
             serviceMap.clear();
             timePoint = System.currentTimeMillis() + (1000*60*60*24);//一天后清空。
@@ -39,6 +44,22 @@ public class RoundLoadBalance extends LoadBalance{
         Integer index = serviceMap.get(serviceName);
         if(index == null || index >= serverInstanceList.size()){
             index = 0;//如果为空，或者大于服务实例数则从头开始。
+        }
+        if(isGray){
+            List<CoolServerInstance> grayInstances = serverInstanceList.stream().filter((coolServerInstance) -> {
+                Map<String, String> metadata = coolServerInstance.getMetadata();
+                String gray = metadata.get(GatewayConst.GRAY);
+                return "true".equals(gray);
+            }).collect(Collectors.toList());
+            // 灰度流量，走随机
+            if(grayInstances != null){
+                int randomIndex = ThreadLocalRandom.current().nextInt(grayInstances.size());
+                return grayInstances.get(randomIndex);
+            }
+            else{
+                log.error("according to {} not found serviceInstance",serviceName);
+                throw new CoolGateWayException(ResponseCode.SERVICE_INSTANCE_NOT_FOUND);
+            }
         }
         CoolServerInstance coolServerInstance = serverInstanceList.get(index);
         index = (index+1)%serverInstanceList.size();

@@ -19,4 +19,6 @@ public class GatewayRule {
     private int tryNumber = 3;
     //是否需要限流
     private Boolean isLimit = false;
+    //是否灰度请求
+    private Boolean isGray = false;
 }

@@ -10,7 +10,6 @@ import com.example.aservice.common.UserDto;
 
 public interface BService {
 
-
     @CoolMethod(path = "/serviceB/aaa",method = "get")
     public UserDto getAAA(String name, int age);
 

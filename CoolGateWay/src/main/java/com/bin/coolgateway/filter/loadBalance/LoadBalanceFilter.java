@@ -45,7 +45,8 @@ public class LoadBalanceFilter implements Filter {
             log.error("loadBalance trigger error:loadType {} not found relation instance",context.getGatewayRule().getLoadBalanceType());
             throw new CoolGateWayException(ResponseCode.SERVICE_INSTANCE_NOT_FOUND);
         }
-        CoolServerInstance serverInstance = loadBalance.getServerInstance(context.getServiceName());
+
+        CoolServerInstance serverInstance = loadBalance.getServerInstance(context.getServiceName(),context.getGatewayRule().getIsGray());
         String host = serverInstance.getIp() + ":" + serverInstance.getPort();
         //设置新域名
         context.getGatewayRequest().setModifyHost(host);
@@ -53,6 +54,6 @@ public class LoadBalanceFilter implements Filter {
 
     @Override
     public int getOrder() {
-        return 4;
+        return 20;
     }
 }

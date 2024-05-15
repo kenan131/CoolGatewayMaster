@@ -1,6 +1,9 @@
 package com.bin.coolgateway.model;
 
 import lombok.Data;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -20,6 +23,8 @@ public class CoolServerInstance {
     protected String ip;
 
     protected int port;
+
+    protected Map<String, String> metadata = new HashMap();
 
     @Override
     public boolean equals(Object o) {

@@ -46,6 +46,6 @@ public class AuthFilter implements Filter{
 
     @Override
     public int getOrder() {
-        return 3;
+        return 15;
     }
 }

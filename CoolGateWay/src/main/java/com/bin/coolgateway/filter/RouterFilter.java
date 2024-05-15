@@ -91,6 +91,6 @@ public class RouterFilter implements Filter{
     }
     @Override
     public int getOrder() {
-        return 5;
+        return 25;
     }
 }

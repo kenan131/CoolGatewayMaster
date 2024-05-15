@@ -17,4 +17,6 @@ public interface GatewayConst {
 	String RANDOM = "random";
 	//循环
 	String ROUND = "round";
+	//灰度测试
+	String GRAY = "gray";
 }

@@ -14,5 +14,5 @@ public abstract class LoadBalance {
         serverCache = cache;
     }
 
-    abstract CoolServerInstance getServerInstance(String serviceName);
+    abstract CoolServerInstance getServerInstance(String serviceName,boolean isGray);
 }
