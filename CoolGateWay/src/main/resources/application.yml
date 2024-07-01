@@ -27,7 +27,6 @@ cool:
           - /serviceB/**
     whites:
       - /user/**
-      - /serviceB/**
     limit:
       open: false
       limitType: slide
@@ -35,6 +34,8 @@ cool:
       timeWindow: 5000
     authority:
       accessKey: coolGateway
+      enable: false
+    respDto: false
   registerCenter:
     adders: 127.0.0.1:8848
     group: DEFAULT_GROUP

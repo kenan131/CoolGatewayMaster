@@ -39,7 +39,7 @@ public class GatewayResponseRes implements Serializable {
         else{
             httpResponseStatus = HttpResponseStatus.valueOf(response.getStatusCode());
             headers = response.getHeaders();
-            // 如果有 不去掉，不能正常返回正常结果。
+            // Transfer-Encoding 不能和 CONTENT_LENGTH 共同存在
             headers.remove("Transfer-Encoding");
             //因网关层包装了返回信息，故设置json串格式。
             headers.set(HttpHeaderNames.CONTENT_TYPE,HttpHeaderValues.APPLICATION_JSON+";charset=utf-8");
@@ -58,7 +58,7 @@ public class GatewayResponseRes implements Serializable {
         GatewayResponseRes gatewayResponseRes = new GatewayResponseRes();
         gatewayResponseRes.setGatewayCode(responseCode.getCode());
         gatewayResponseRes.setMessage(responseCode.getMessage());
-        gatewayResponseRes.setData(response.getResponseBody());
+        gatewayResponseRes.setData(response.getResponseBody(StandardCharsets.UTF_8));
         HttpResponseStatus httpResponseStatus = HttpResponseStatus.valueOf(response.getStatusCode());
         HttpHeaders headers = response.getHeaders();
         headers.remove("Transfer-Encoding");
@@ -67,6 +67,26 @@ public class GatewayResponseRes implements Serializable {
         httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,httpResponseStatus,content);
         httpResponse.headers().add(headers);
         httpResponse.headers().set(HttpHeaderNames.CONTENT_LENGTH, httpResponse.content().readableBytes());
+        return httpResponse;
+    }
+
+    public static FullHttpResponse builderGatewayNativeRes(Response response, ResponseCode responseCode){
+        DefaultFullHttpResponse httpResponse;
+        HttpResponseStatus httpResponseStatus;
+        HttpHeaders headers;
+        if(response == null){
+            httpResponseStatus = responseCode.getStatus();
+            headers = new DefaultHttpHeaders();
+            httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,httpResponseStatus);
+        }
+        else{
+            httpResponseStatus = HttpResponseStatus.valueOf(response.getStatusCode());
+            headers = response.getHeaders();
+            //有返回内容，赋值给data
+            ByteBuf content = Unpooled.wrappedBuffer(response.getResponseBodyAsBytes());
+            httpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,httpResponseStatus,content);
+        }
+        httpResponse.headers().add(headers);
         return httpResponse;
     }
 }

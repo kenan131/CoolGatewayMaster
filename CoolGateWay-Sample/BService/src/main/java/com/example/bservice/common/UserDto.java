@@ -1,11 +1,13 @@
 package com.example.bservice.common;
 
+import java.io.Serializable;
+
 /**
  * @author: bin
  * @date: 2024/1/4 17:46
  **/
 
-public class UserDto {
+public class UserDto implements Serializable {
     public UserDto() {
     }
 

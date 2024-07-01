@@ -18,10 +18,7 @@ public class CountLimit extends AbstractLimit{
 
     private Long timePoint = 0l;
 
-    public CountLimit() {
-//        Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new MyTask(),timeWindow,timeWindow);
-    }
+    public CountLimit() {}
 
     @Override
     public boolean doLimit(String ip) {
@@ -42,14 +39,4 @@ public class CountLimit extends AbstractLimit{
             return true;
         }
     }
-
-//    class MyTask extends TimerTask {
-//
-//        @Override
-//        public void run() {
-//            synchronized (map){
-//                map.clear();
-//            }
-//        }
-//    }
 }
